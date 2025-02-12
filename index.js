@@ -8,20 +8,19 @@ const port = 3000;
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("This is the home page");
+  res.status(200).send("This is the home page");
 });
-
-app.get("/about", (req, res) => {
-  res.json({
+app.get("/about", (req, res) =>
+  res.status(200).json({
     status: "success",
-    message: "response success",
+    message: "respone success",
     description: "Exercise #02",
     date: moment().format(),
-  });
-});
+  })
+);
 
 app.get("/users", (req, res) => {
-  res.json(users);
+  res.status(200).json(users);
 });
 
 app.listen(port, () => {
