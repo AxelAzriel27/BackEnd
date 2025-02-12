@@ -1,47 +1,43 @@
 const http = require("http");
-const { hello, greetings } = require("./helloWorld");
-const moment = require("moment");
+const express = require("express");
+const app = express();
 
-const server = http.createServer((req, res) => {
-  // res.write(hello)
-  // res.write(greetings())
-  const url = req.url;
-  if (url === "/users") {
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "text/json");
-    res.write(
-      JSON.stringify({
-        status: "success",
-        message: "Users",
-        date: moment().format("MMMM Do YYYY, h:mm:ss a"),
-      })
-    );
-  } else if (url === "/post") {
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "text/json");
-    res.write(
-      JSON.stringify({
-        status: "success",
-        message: "Post",
-        date: moment().format("MMMM Do YYYY, h:mm:ss a"),
-      })
-    );
-  } else {
-    res.statusCode = 404;
-    res.setHeader("Content-Type", "text/json");
-    res.write(
-      JSON.stringify({
-        status: "not found",
-        message: "Route tidak ditemukan",
-        date: moment().format("MMMM Do YYYY, h:mm:ss a"),
-      })
-    );
-  }
-  res.end();
+app.get("/", (req, res) => res.send("Hello World!"));
+
+app.get("/contoh", (req, res) => {
+  res.send("request dengan method GET");
 });
+app.get("/about", (req, res) =>
+  res.status(200).json({
+    status: "success",
+    message: "About page",
+    data: [],
+  })
+);
+
+app.post("/contoh", (req, res) => {
+  res.send("request dengan method POST");
+});
+
+app.put("/contoh", (req, res) => {
+  res.send("request dengan method PUT");
+});
+
+app.delete("/contoh", (req, res) => {
+  res.send("request dengan method DELETE");
+});
+
+app.patch("/contoh", (req, res) => {
+  res.send("request dengan method PATCH");
+});
+
+app.all("/universal", (req, res) => res.send(`Request method ${req.method}`));
+// Routing dinamis
+// 1. Menggunakan params
+app.get("/post/:id", (req, res) => res.send(`Artikel ke - ${req.params.id}`));
 
 const hostname = "127.0.0.1";
 const port = 3000;
-server.listen(port, hostname, () =>
-  console.log(`Server running at http://${hostname}:${port}`)
-);
+app.listen(port, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
+});
