@@ -12,7 +12,7 @@ app.get("/about", (req, res) =>
   res.status(200).json({
     status: "success",
     message: "respone success",
-    description: "Exercise #02",
+    description: "Exercise #03",
     date: moment().format(),
   })
 );
