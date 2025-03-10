@@ -1,40 +1,37 @@
-const http = require("http");
-const moment = require("moment");
 const express = require("express");
 const morgan = require("morgan");
-// const errorhandler = require("errorhandler");
-const app = express();
-const routers = require("./routers");
-const path = require("path");
 const cors = require("cors");
+const path = require("path");
+const router = require("./routers");
 
-//Middleware
-const log = (req, res, next) => {
-  console.log(
-    moment().format("h:mm:ss a") + " " + req.originalUrl + " " + req.ip
-  );
-  next();
-};
+const app = express();
 
 app.use(morgan("tiny"));
-// app.use(errorhandler);
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
   cors({
     origin: "http://127.0.0.1:5500",
+    methods: ["GET", "PUT"],
   })
 );
 
-//Routing
-app.use(routers);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "./public")));
 
-//Middleware untuk 404
+app.use(router);
+
 app.use((req, res, next) => {
   res.status(404).json({
     status: "error",
     message: "resource tidak ditemukan",
+  });
+});
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({
+    message: "terjadi kesalahan pada server",
   });
 });
 
