@@ -48,6 +48,16 @@ routers.get("/download", (req, res) => {
 });
 
 // Endpoint 5
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public");
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+const upload = multer({ storage });
+
 routers.post("/upload", uploud.single("file"), (req, res) => {
   const file = req.file;
   if (file) {
