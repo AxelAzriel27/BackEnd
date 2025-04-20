@@ -210,10 +210,10 @@ routers.get("/users-with-orders", async (req, res) => {
       .aggregate([
         {
           $lookup: {
-            from: "orders", // The collection to join with
-            localField: "_id", // The field from the `users` collection
-            foreignField: "userId", // The field from the `orders` collection
-            as: "orders", // The name of the resulting array field
+            from: "orders",
+            localField: "_id", 
+            foreignField: "userId",
+            as: "orders",
           },
         },
       ])
